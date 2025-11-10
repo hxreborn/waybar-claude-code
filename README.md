@@ -143,6 +143,7 @@ Customize via environment variables:
 | Variable | Default | Description |
 |----------|---------|-------------|
 | `CLAUDE_INTERVAL_SEC` | `300` | Poll interval in seconds |
+| `CLAUDE_ANIMATE` | `false` | Show rotating spinner character instead of text |
 
 ## Usage
 
