@@ -18,7 +18,7 @@ A lightweight Waybar custom module written in Go that displays Claude Code usage
 
 ## Features
 
-- **Static Go binary** - Self-contained executable with no external dependencies
+- **CGO-disabled static binary** - Pure Go compilation, no glibc or external dependencies
 - **One-shot execution** - Runs once per poll, exits immediately after output
 - **Minimal footprint** - <10MB RSS, <3MB binary with near-zero idle CPU usage
 - **Battery-efficient** - No background processes or continuous resource usage
