@@ -1,0 +1,12 @@
+#custom-claude-code {
+  font-size: 0.95em;
+  margin: 0 6px;
+  padding: 2px 10px;
+  border-radius: 8px;
+  background: rgba(0, 0, 0, 0.06);
+  transition: background-color 0.2s ease;
+}
+
+#custom-claude-code:hover {
+  background: rgba(0, 0, 0, 0.12);
+}
