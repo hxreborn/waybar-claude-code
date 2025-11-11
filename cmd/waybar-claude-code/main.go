@@ -8,7 +8,6 @@ import (
 	"syscall"
 	"time"
 
-	"github.com/briandowns/spinner"
 	"github.com/hxreborn/waybar-claude-code/internal/ccusage"
 	"github.com/hxreborn/waybar-claude-code/internal/config"
 	"github.com/hxreborn/waybar-claude-code/internal/format"
@@ -16,9 +15,10 @@ import (
 )
 
 var (
-	version = "dev"
-	frames  = spinner.CharSets[14]
-	frame   int
+	version    = "dev"
+	iconStatic = "󰜡"
+	iconFrames = []string{"⠋", "⠙", "⠹", "⠸", "⠼", "⠴", "⠦", "⠧", "⠇", "⠏"}
+	frame      int
 )
 
 func main() {
@@ -56,14 +56,14 @@ func outputMetrics(ctx context.Context, animate bool) {
 		data = &ccusage.BlocksData{}
 	}
 
-	text := format.FormatText(data)
+	icon := iconStatic
 	if animate {
-		text = frames[frame%len(frames)]
+		icon = iconFrames[frame%len(iconFrames)]
 		frame++
 	}
 
 	output := waybar.Output{
-		Text:    text,
+		Text:    icon,
 		Tooltip: format.FormatTooltip(data),
 	}
 
