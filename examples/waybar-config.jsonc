@@ -1,16 +1,11 @@
 {
-  "modules-right": [
-    "custom/claude-code",
-    "pulseaudio",
-    "network",
-    "clock"
-  ],
+  "modules-right": ["custom/claude-code", "pulseaudio", "network", "clock"],
   "custom/claude-code": {
     "return-type": "json",
     "exec": "~/.config/waybar/modules/waybar-claude-code",
     "format": "{text}",
     "interval": 300,
     "tooltip": true,
-    "on-click": "kitty -e claude"
+    "on-click": "${TERMINAL:-kitty} -e claude"
   }
 }
