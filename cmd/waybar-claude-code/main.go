@@ -1,15 +1,16 @@
 package main
 
 import (
+	"bufio"
 	"context"
 	"flag"
 	"fmt"
+	"os"
 	"os/signal"
 	"syscall"
 	"time"
 
 	"github.com/hxreborn/waybar-claude-code/internal/ccusage"
-	"github.com/hxreborn/waybar-claude-code/internal/config"
 	"github.com/hxreborn/waybar-claude-code/internal/format"
 	"github.com/hxreborn/waybar-claude-code/pkg/waybar"
 )
@@ -17,8 +18,7 @@ import (
 var (
 	version    = "dev"
 	iconStatic = "󰜡"
-	iconFrames = []string{"⠋", "⠙", "⠹", "⠸", "⠼", "⠴", "⠦", "⠧", "⠇", "⠏"}
-	frame      int
+	writer     = bufio.NewWriter(os.Stdout)
 )
 
 func main() {
@@ -30,42 +30,42 @@ func main() {
 		return
 	}
 
-	cfg := config.Load()
-
 	ctx, cancel := signal.NotifyContext(context.Background(), syscall.SIGINT, syscall.SIGTERM)
 	defer cancel()
 
-	ticker := time.NewTicker(cfg.Interval)
-	defer ticker.Stop()
-
-	outputMetrics(ctx, cfg.Animate)
-
-	for {
-		select {
-		case <-ctx.Done():
-			return
-		case <-ticker.C:
-			outputMetrics(ctx, cfg.Animate)
-		}
-	}
+	printStatus(iconStatic, "Loading Claude Code usage…", "loading")
+	outputCycle(ctx)
 }
 
-func outputMetrics(ctx context.Context, animate bool) {
+func outputCycle(ctx context.Context) {
+	icon := iconStatic
+
+	// Give ccusage more time to fetch data
+	ctx, cancel := context.WithTimeout(ctx, 8*time.Second)
+	defer cancel()
+
 	data, err := ccusage.GetBlocks(ctx)
 	if err != nil {
-		data = &ccusage.BlocksData{}
+		printStatus(icon, "Unable to load stats", "error")
+		return
 	}
 
-	icon := iconStatic
-	if animate {
-		icon = iconFrames[frame%len(iconFrames)]
-		frame++
-	}
+	tooltip := format.FormatTooltip(data)
 
+	printStatus(icon, tooltip, "")
+}
+
+func printStatus(icon, tooltip, class string) {
 	output := waybar.Output{
-		Text:    icon,
-		Tooltip: format.FormatTooltip(data),
+		Text:       icon,
+		Tooltip:    tooltip,
+		Percentage: 0,
 	}
 
-	_ = output.Print()
+	if class != "" {
+		output.Class = class
+	}
+
+	_ = output.PrintTo(writer)
+	writer.Flush()
 }

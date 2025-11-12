@@ -5,11 +5,13 @@
     "network",
     "clock"
   ],
-
   "custom/claude-code": {
     "return-type": "json",
     "exec": "~/.config/waybar/modules/waybar-claude-code",
+    "format": "{text}",
     "interval": 300,
-    "tooltip": true
+    "restart-interval": 30,
+    "tooltip": true,
+    "on-click": "kitty -e claude"
   }
 }
