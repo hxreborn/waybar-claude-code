@@ -7,18 +7,17 @@ import (
 )
 
 type Output struct {
-	Text       string      `json:"text"`
-	Tooltip    string      `json:"tooltip,omitempty"`
-	Class      interface{} `json:"class,omitempty"`
-	Percentage int         `json:"percentage,omitempty"`
+	Text       string `json:"text"`
+	Tooltip    string `json:"tooltip,omitempty"`
+	Class      string `json:"class,omitempty"`
+	Percentage int    `json:"percentage,omitempty"`
 }
 
 func (o *Output) Print() error {
-	data, err := json.Marshal(o)
-	if err != nil {
-		return fmt.Errorf("json marshal: %w", err)
+	enc := json.NewEncoder(os.Stdout)
+	if err := enc.Encode(o); err != nil {
+		return fmt.Errorf("json encode: %w", err)
 	}
-	fmt.Println(string(data))
 	return nil
 }
 
@@ -28,6 +27,6 @@ func Error(msg string) {
 		Tooltip: msg,
 		Class:   "error",
 	}
-	o.Print()
+	_ = o.Print()
 	os.Exit(1)
 }

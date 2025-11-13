@@ -4,9 +4,6 @@ import (
 	"context"
 	"flag"
 	"fmt"
-	"io"
-	"log"
-	"os"
 	"os/signal"
 	"syscall"
 	"time"
@@ -25,49 +22,39 @@ func main() {
 
 	if *showVersion {
 		fmt.Printf("waybar-claude-code %s\n", version)
-		os.Exit(0)
+		return
 	}
 
 	cfg := config.Load()
 
-	ctx, cancel := signal.NotifyContext(context.Background(), os.Interrupt, syscall.SIGTERM)
+	ctx, cancel := signal.NotifyContext(context.Background(), syscall.SIGINT, syscall.SIGTERM)
 	defer cancel()
-
-	if !cfg.Debug {
-		log.SetOutput(io.Discard)
-	}
 
 	ticker := time.NewTicker(cfg.Interval)
 	defer ticker.Stop()
 
-	outputMetrics(ctx, cfg.Debug)
+	outputMetrics(ctx)
 
 	for {
 		select {
 		case <-ctx.Done():
 			return
 		case <-ticker.C:
-			outputMetrics(ctx, cfg.Debug)
+			outputMetrics(ctx)
 		}
 	}
 }
 
-func outputMetrics(ctx context.Context, debug bool) {
+func outputMetrics(ctx context.Context) {
 	data, err := ccusage.GetBlocks(ctx)
 	if err != nil {
-		if debug {
-			log.Printf("Error getting blocks: %v", err)
-		}
 		data = &ccusage.BlocksData{}
 	}
 
-	text := format.FormatText(data)
-	tooltip := format.FormatTooltip(data)
-
 	output := waybar.Output{
-		Text:    text,
-		Tooltip: tooltip,
+		Text:    format.FormatText(data),
+		Tooltip: format.FormatTooltip(data),
 	}
 
-	output.Print()
+	_ = output.Print()
 }

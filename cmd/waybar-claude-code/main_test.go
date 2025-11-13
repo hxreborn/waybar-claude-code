@@ -12,7 +12,7 @@ import (
 
 func TestJSONOutput(t *testing.T) {
 	cmd := exec.Command("go", "run", ".")
-	cmd.Env = append(os.Environ(), "CLAUDE_INTERVAL_SEC=60")
+	cmd.Env = append(os.Environ(), "CLAUDE_INTERVAL_SEC=300")
 
 	stdout := &bytes.Buffer{}
 	cmd.Stdout = stdout

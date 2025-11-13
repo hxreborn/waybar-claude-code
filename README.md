@@ -142,8 +142,7 @@ Customize via environment variables:
 
 | Variable | Default | Description |
 |----------|---------|-------------|
-| `CLAUDE_INTERVAL_SEC` | `300` | Poll interval in seconds (set `0` for dev loops) |
-| `CLAUDE_DEBUG` | `false` | Emit verbose stderr logs while running |
+| `CLAUDE_INTERVAL_SEC` | `300` | Poll interval in seconds |
 
 ## Usage
 
