@@ -1,0 +1,3 @@
+module github.com/hxreborn/waybar-claude-code
+
+go 1.25.4

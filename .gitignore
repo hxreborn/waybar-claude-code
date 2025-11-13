@@ -1,0 +1,34 @@
+# Binaries
+waybar-claude-code
+*.exe
+*.dll
+*.so
+*.dylib
+
+# Test artifacts
+*.test
+*.out
+coverage.txt
+*.prof
+
+# Build artifacts
+dist/
+build/
+
+# Archived documentation (development reference only)
+docs/archive/
+
+# Go workspace
+go.work
+go.work.sum
+
+# IDE
+.idea/
+.vscode/
+*.swp
+*.swo
+*~
+
+# OS
+.DS_Store
+Thumbs.db
