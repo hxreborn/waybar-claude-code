@@ -8,17 +8,17 @@ import (
 	"os"
 	"os/signal"
 	"syscall"
-	"time"
 
 	"github.com/hxreborn/waybar-claude-code/internal/ccusage"
 	"github.com/hxreborn/waybar-claude-code/internal/format"
 	"github.com/hxreborn/waybar-claude-code/pkg/waybar"
 )
 
-var (
-	version    = "dev"
-	iconStatic = "󰜡"
-	writer     = bufio.NewWriter(os.Stdout)
+const (
+	version      = "dev"
+	iconStatic   = "󰜡"
+	classLoading = "loading"
+	classError   = "error"
 )
 
 func main() {
@@ -33,39 +33,36 @@ func main() {
 	ctx, cancel := signal.NotifyContext(context.Background(), syscall.SIGINT, syscall.SIGTERM)
 	defer cancel()
 
-	printStatus(iconStatic, "Loading Claude Code usage…", "loading")
-	outputCycle(ctx)
-}
+	printFrame(iconStatic, "Loading Claude Code usage…", classLoading)
 
-func outputCycle(ctx context.Context) {
-	icon := iconStatic
-
-	// Give ccusage more time to fetch data
-	ctx, cancel := context.WithTimeout(ctx, 8*time.Second)
-	defer cancel()
-
-	data, err := ccusage.GetBlocks(ctx)
+	tooltip, err := fetchTooltip(ctx)
 	if err != nil {
-		printStatus(icon, "Unable to load stats", "error")
+		printFrame(iconStatic, "Unable to load stats", classError)
 		return
 	}
 
-	tooltip := format.FormatTooltip(data)
-
-	printStatus(icon, tooltip, "")
+	printFrame(iconStatic, tooltip, "")
 }
 
-func printStatus(icon, tooltip, class string) {
+func fetchTooltip(ctx context.Context) (string, error) {
+	data, err := ccusage.GetBlocks(ctx)
+	if err != nil {
+		return "", err
+	}
+	return format.FormatTooltip(data), nil
+}
+
+func printFrame(icon, tooltip, class string) {
+	writer := bufio.NewWriter(os.Stdout)
+	defer writer.Flush()
+
 	output := waybar.Output{
-		Text:       icon,
-		Tooltip:    tooltip,
-		Percentage: 0,
+		Text:    icon,
+		Tooltip: tooltip,
+		Class:   class,
 	}
 
-	if class != "" {
-		output.Class = class
+	if err := output.PrintTo(writer); err != nil {
+		fmt.Fprintf(os.Stderr, "waybar output error: %v\n", err)
 	}
-
-	_ = output.PrintTo(writer)
-	writer.Flush()
 }

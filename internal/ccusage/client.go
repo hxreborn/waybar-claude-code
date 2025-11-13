@@ -5,7 +5,6 @@ import (
 	"encoding/json"
 	"fmt"
 	"os/exec"
-	"time"
 )
 
 type TokenCounts struct {
@@ -58,23 +57,20 @@ type BlocksData struct {
 }
 
 func GetBlocks(ctx context.Context) (*BlocksData, error) {
-	ctx, cancel := context.WithTimeout(ctx, 10*time.Second)
-	defer cancel()
-
 	cmd := exec.CommandContext(ctx, "npx", "ccusage@latest", "blocks", "--active", "--json", "--offline")
 
 	output, err := cmd.Output()
 	if err != nil {
-		return &BlocksData{}, fmt.Errorf("failed to execute ccusage: %w", err)
+		return nil, fmt.Errorf("failed to execute ccusage: %w", err)
 	}
 
 	var response BlocksResponse
 	if err := json.Unmarshal(output, &response); err != nil {
-		return &BlocksData{}, fmt.Errorf("failed to parse ccusage output: %w", err)
+		return nil, fmt.Errorf("failed to parse ccusage output: %w", err)
 	}
 
 	if len(response.Blocks) == 0 {
-		return &BlocksData{}, fmt.Errorf("no active blocks found")
+		return nil, fmt.Errorf("no active blocks found")
 	}
 
 	block := response.Blocks[0]

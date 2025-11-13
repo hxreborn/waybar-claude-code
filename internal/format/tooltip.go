@@ -48,7 +48,3 @@ func FormatTooltip(data *ccusage.BlocksData) string {
 
 	return b.String()
 }
-
-func FormatText(data *ccusage.BlocksData) string {
-	return fmt.Sprintf("Reqs: %d | $%.2f", data.Entries, data.CostUSD)
-}
