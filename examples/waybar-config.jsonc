@@ -10,7 +10,6 @@
     "exec": "~/.config/waybar/modules/waybar-claude-code",
     "format": "{text}",
     "interval": 300,
-    "restart-interval": 30,
     "tooltip": true,
     "on-click": "kitty -e claude"
   }

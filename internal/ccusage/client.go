@@ -61,16 +61,16 @@ func GetBlocks(ctx context.Context) (*BlocksData, error) {
 
 	output, err := cmd.Output()
 	if err != nil {
-		return nil, fmt.Errorf("failed to execute ccusage: %w", err)
+		return nil, fmt.Errorf("execute ccusage (npx ccusage@latest blocks --active --json --offline): %w", err)
 	}
 
 	var response BlocksResponse
 	if err := json.Unmarshal(output, &response); err != nil {
-		return nil, fmt.Errorf("failed to parse ccusage output: %w", err)
+		return nil, fmt.Errorf("parse ccusage json output: %w", err)
 	}
 
 	if len(response.Blocks) == 0 {
-		return nil, fmt.Errorf("no active blocks found")
+		return nil, fmt.Errorf("no active usage blocks found in ccusage response")
 	}
 
 	block := response.Blocks[0]

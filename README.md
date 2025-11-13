@@ -5,7 +5,7 @@
 ![Nerd Fonts](https://img.shields.io/badge/nerd%20font-required-orange)
 [![License](https://img.shields.io/badge/license-MIT-green.svg)](LICENSE)
 
-A lightweight Waybar custom module that displays Claude Code usage metrics to your bar using [ccusage](https://github.com/ryoppippi/ccusage).
+A lightweight Waybar custom module written in Go that displays Claude Code usage metrics to your bar using [ccusage](https://github.com/ryoppippi/ccusage).
 
 ## Screenshots
 
@@ -18,11 +18,11 @@ A lightweight Waybar custom module that displays Claude Code usage metrics to yo
 
 ## Features
 
-- **CGO-disabled static binary** - Runs on Arch/NixOS/Fedora without glibc or external deps
+- **Static Go binary** - Self-contained executable with no external dependencies
 - **One-shot execution** - Runs once per poll, exits immediately after output
-- **Waybar-controlled polling** - Configure refresh via `interval` parameter
-- **Minimal footprint** - <10MB RSS, ~50ms startup, <3MB binary
-- **Detailed tooltip** - Requests, tokens, cost, time until reset
+- **Minimal footprint** - <10MB RSS, <3MB binary with near-zero idle CPU usage
+- **Battery-efficient** - No background processes or continuous resource usage
+- **Configurable polling** - Refresh interval controlled by Waybar settings
 
 ## Requirements
 
@@ -38,8 +38,8 @@ A lightweight Waybar custom module that displays Claude Code usage metrics to yo
 Download and install to your Waybar modules directory:
 
 ```bash
-curl -LO https://github.com/hxreborn/waybar-claude-code/releases/latest/download/waybar-claude-code \
-  && install -Dm755 waybar-claude-code ~/.config/waybar/modules/waybar-claude-code
+curl -LO https://github.com/hxreborn/waybar-claude-code/releases/latest/download/waybar-claude-code
+install -Dm755 waybar-claude-code ~/.config/waybar/modules/waybar-claude-code
 ```
 
 ### Build from Source
@@ -47,9 +47,9 @@ curl -LO https://github.com/hxreborn/waybar-claude-code/releases/latest/download
 Clone and build:
 
 ```bash
-git clone https://github.com/hxreborn/waybar-claude-code.git /tmp/waybar-claude-code \
-  && cd /tmp/waybar-claude-code \
-  && make install  # Installs to ~/.config/waybar/modules/
+git clone https://github.com/hxreborn/waybar-claude-code.git /tmp/waybar-claude-code
+cd /tmp/waybar-claude-code
+make install
 ```
 
 ## Configuration
@@ -80,7 +80,7 @@ Add to `~/.config/waybar/config.jsonc`:
 ```
 
 **Config Options:**
-- `interval: 300` - Polling interval in seconds (5 minutes)
+- `interval: 300` - Polling interval in seconds
 - `restart-interval: 30` - Auto-restart interval in seconds
 - `tooltip: true` - Enable hover tooltip with detailed metrics
 - `on-click: "kitty -e claude"` - Launch Claude Code in Kitty terminal
@@ -102,7 +102,7 @@ Add to `~/.config/waybar/style.css`:
 }
 ```
 
-See [examples/](examples/) for theme-specific color schemes and advanced styling options.
+See [examples/](examples/) for basic configuration and styling examples.
 
 ## Usage
 
