@@ -1,5 +1,5 @@
 # Binaries
-waybar-claude-code
+/waybar-claude-code
 *.exe
 *.dll
 *.so
