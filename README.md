@@ -9,10 +9,12 @@ A lightweight Waybar custom module written in Go that displays Claude Code usage
 
 ## Demo
 
-![Demo](assets/demo.gif)
+<p align="center">
+  <img src="assets/demo.gif" width="800" alt="Demo">
+</p>
 
 > [!NOTE]
-> Check out the [example configuration](examples/) for CSS and Waybar config samples.
+> If you're using waybar for the first time checkout the [example configuration](examples).
 
 ## Features
 
@@ -57,31 +59,15 @@ make install
 Add to `~/.config/waybar/config.jsonc`:
 
 ```jsonc
-{
-  "modules-right": [
-    "custom/claude-code",
-    "pulseaudio",
-    "network",
-    "clock"
-  ],
-
-  "custom/claude-code": {
-    "return-type": "json",
-    "exec": "~/.config/waybar/modules/waybar-claude-code",
-    "format": "{text}",
-    "interval": 300,
-    "restart-interval": 30,
-    "tooltip": true,
-    "on-click": "kitty -e claude"
-  }
+"custom/claude-code": {
+  "return-type": "json",
+  "exec": "~/.config/waybar/modules/waybar-claude-code",
+  "format": "{text}",
+  "interval": 300,
+  "tooltip": true,
+  "on-click": "${TERMINAL:-kitty} -e claude"
 }
 ```
-
-**Config Options:**
-- `interval: 300` - Polling interval in seconds
-- `restart-interval: 30` - Auto-restart interval in seconds
-- `tooltip: true` - Enable hover tooltip with detailed metrics
-- `on-click: "kitty -e claude"` - Launch Claude Code in Kitty terminal
 
 ### Style Configuration
 
@@ -92,26 +78,18 @@ Add to `~/.config/waybar/style.css`:
   padding: 0 10px;
   margin: 0 2px;
   color: inherit;
-  transition: color 0.2s ease-in-out;
 }
 
 #custom-claude-code:hover {
   color: #ff8c00;
 }
 
-/* Nerd Font required for tooltip icons */
 tooltip {
-  font-family: "MesloLGSDZ Nerd Font", "CaskaydiaCove Nerd Font", monospace;
-}
-
-tooltip label {
-  font-family: "MesloLGSDZ Nerd Font", "CaskaydiaCove Nerd Font", monospace;
+  font-family: "MesloLGSDZ Nerd Font", monospace;
 }
 ```
 
-**Note:** The tooltip displays icons (, , , ) which require a [Nerd Font](https://www.nerdfonts.com/) to render properly. Install any Nerd Font and reference it in the CSS `font-family`.
-
-See [examples/](examples/) for complete configuration and styling examples.
+**Note:** Tooltip icons require a [Nerd Font](https://www.nerdfonts.com/). See [examples/](examples/) for complete styling with active states and tooltip customization.
 
 ## Usage
 
