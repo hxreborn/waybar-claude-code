@@ -18,11 +18,11 @@ A lightweight Waybar custom module written in Go that displays Claude Code usage
 
 ## Features
 
-- **CGO-disabled static binary** - Pure Go compilation, no glibc or external dependencies
-- **One-shot execution** - Runs once per poll, exits immediately after output
-- **Minimal footprint** - <10MB RSS, <3MB binary with near-zero idle CPU usage
-- **Battery-efficient** - No background processes or continuous resource usage
-- **Configurable polling** - Refresh interval controlled by Waybar settings
+- **CGO-disabled static binary** - Single 3MB Go executable with zero runtime dependencies. Runs anywhere without glibc or library conflicts.
+- **Live usage without daemons** - Executes ccusage on each poll to show current Claude Code stats without background processes hogging resources.
+- **Waybar-native JSON output** - Built-in tooltip support and CSS class integration. Works seamlessly with your existing bar configuration and theme.
+- **Microscopic overhead** - Spawns per interval, fetches stats and exits. ~10MB memory footprint with effectively zero CPU load.
+- **Configurable refresh rate** - Polls every 5 minutes by default. Change one config value to update faster or slower.
 
 ## Requirements
 
@@ -100,18 +100,33 @@ Add to `~/.config/waybar/style.css`:
 #custom-claude-code:hover {
   color: #ff8c00;
 }
+
+/* Nerd Font required for tooltip icons */
+tooltip {
+  font-family: "MesloLGSDZ Nerd Font", "CaskaydiaCove Nerd Font", monospace;
+}
+
+tooltip label {
+  font-family: "MesloLGSDZ Nerd Font", "CaskaydiaCove Nerd Font", monospace;
+}
 ```
 
-See [examples/](examples/) for basic configuration and styling examples.
+**Note:** The tooltip displays icons (, , , ) which require a [Nerd Font](https://www.nerdfonts.com/) to render properly. Install any Nerd Font and reference it in the CSS `font-family`.
+
+See [examples/](examples/) for complete configuration and styling examples.
 
 ## Usage
 
-Hover over the module to see detailed metrics:
+Hover over the 󰜡 icon to see detailed metrics:
 
 ```
-Requests: 42 | Tokens: 1.2M
-Cost: $0.45 | Reset: 2h 15m
+ Active Block (resets in 3h 45m - 18h30)
+ Requests: 110
+ Tokens: 2.8M (1.5M in / 1.3M out)
+ Cost: $1.47 @ $0.38/h
 ```
+
+Reset time uses 24-hour format and rounds to the nearest hour if within 2 minutes (e.g., `17:59` → `18h`).
 
 ## License
 
