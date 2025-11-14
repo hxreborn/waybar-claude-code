@@ -13,3 +13,16 @@
   color: #cc6600;
   box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.3);
 }
+
+tooltip {
+  background-color: rgba(30, 30, 46, 0.95);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 8px;
+  padding: 8px 12px;
+  font-family: "MesloLGSDZ Nerd Font", "CaskaydiaCove Nerd Font", monospace;
+}
+
+tooltip label {
+  color: #cdd6f4;
+  font-family: "MesloLGSDZ Nerd Font", "CaskaydiaCove Nerd Font", monospace;
+}

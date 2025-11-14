@@ -3,6 +3,7 @@ package format
 import (
 	"fmt"
 	"strings"
+	"time"
 
 	"github.com/hxreborn/waybar-claude-code/internal/ccusage"
 )
@@ -35,16 +36,42 @@ func FormatDuration(minutes int) string {
 	}
 }
 
+func formatResetTime(t time.Time) string {
+	m := t.Minute()
+
+	if m >= 58 {
+		t = t.Add(time.Duration(60-m) * time.Minute)
+		return t.Format("15h")
+	}
+	if m <= 2 {
+		t = t.Add(-time.Duration(m) * time.Minute)
+		return t.Format("15h")
+	}
+
+	return t.Format("15h04")
+}
+
 func FormatTooltip(data *ccusage.BlocksData) string {
-	var b strings.Builder
+	var sb strings.Builder
 
-	fmt.Fprintf(&b, "Requests: %d | Tokens: %s\n",
-		data.Entries,
-		FormatNumber(data.TotalTokens))
+	resetTime := time.Now().Add(time.Duration(data.RemainingMinutes) * time.Minute)
+	resetTimeStr := formatResetTime(resetTime)
 
-	fmt.Fprintf(&b, "Cost: $%.2f | Reset: %s",
+	fmt.Fprintf(&sb, "<b>\uf1b2 Active Block (resets in %s - %s)</b>\n",
+		FormatDuration(data.RemainingMinutes),
+		resetTimeStr)
+
+	fmt.Fprintf(&sb, "<b>\uf1d8 Requests:</b> %d\n",
+		data.Entries)
+
+	fmt.Fprintf(&sb, "<b>\uf145 Tokens:</b> %s (%s in / %s out)\n",
+		FormatNumber(data.TotalTokens),
+		FormatNumber(data.InputTokens),
+		FormatNumber(data.OutputTokens))
+
+	fmt.Fprintf(&sb, "<b>\uf155 Cost:</b> $%.2f @ $%.2f/h",
 		data.CostUSD,
-		FormatDuration(data.RemainingMinutes))
+		data.CostPerHour)
 
-	return b.String()
+	return sb.String()
 }
