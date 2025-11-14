@@ -7,11 +7,9 @@
 
 A lightweight Waybar custom module written in Go that displays Claude Code usage metrics to your bar using [ccusage](https://github.com/ryoppippi/ccusage).
 
-## Screenshots
+## Demo
 
-![Waybar module in action](assets/screenshot-1.png)
-
-![Tooltip display](assets/screenshot-2.png)
+![Demo](assets/demo.gif)
 
 > [!NOTE]
 > Check out the [example configuration](examples/) for CSS and Waybar config samples.
