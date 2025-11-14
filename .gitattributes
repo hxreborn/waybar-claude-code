@@ -1,1 +1,1 @@
-*.css linguist-language=CSS diff=css
+*.css linguist-detectable=true linguist-documentation=false diff=css
