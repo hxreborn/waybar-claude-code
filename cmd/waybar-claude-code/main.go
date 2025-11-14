@@ -20,7 +20,7 @@ const (
 	iconStatic   = "󰜡"
 	classLoading = "loading"
 	classError   = "error"
-	execTimeout  = 8 * time.Second
+	execTimeout  = 10 * time.Second
 )
 
 func main() {
@@ -38,12 +38,11 @@ func main() {
 	sigCtx, sigCancel := signal.NotifyContext(ctx, syscall.SIGINT, syscall.SIGTERM)
 	defer sigCancel()
 
-	printFrame(iconStatic, "Loading Claude Code usage…", classLoading)
-
 	tooltip, err := fetchTooltip(sigCtx)
 	if err != nil {
 		fmt.Fprintf(os.Stderr, "error: %v\n", err)
-		printFrame(iconStatic, "Unable to load stats", classError)
+		errorTooltip := fmt.Sprintf("Unable to load stats: %v", err)
+		printFrame(iconStatic, errorTooltip, classError)
 		os.Exit(0)
 	}
 
