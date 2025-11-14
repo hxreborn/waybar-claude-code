@@ -47,13 +47,15 @@ type BlocksResponse struct {
 }
 
 type BlocksData struct {
-	Entries          int
-	TotalTokens      int
-	InputTokens      int
-	OutputTokens     int
-	CostUSD          float64
-	RemainingMinutes int
-	CostPerHour      float64
+	Entries                  int
+	TotalTokens              int
+	InputTokens              int
+	OutputTokens             int
+	CacheCreationInputTokens int
+	CacheReadInputTokens     int
+	CostUSD                  float64
+	RemainingMinutes         int
+	CostPerHour              float64
 }
 
 func GetBlocks(ctx context.Context) (*BlocksData, error) {
@@ -76,12 +78,14 @@ func GetBlocks(ctx context.Context) (*BlocksData, error) {
 	block := response.Blocks[0]
 
 	return &BlocksData{
-		Entries:          block.Entries,
-		TotalTokens:      block.TotalTokens,
-		InputTokens:      block.TokenCounts.InputTokens,
-		OutputTokens:     block.TokenCounts.OutputTokens,
-		CostUSD:          block.CostUSD,
-		RemainingMinutes: block.Projection.RemainingMinutes,
-		CostPerHour:      block.BurnRate.CostPerHour,
+		Entries:                  block.Entries,
+		TotalTokens:              block.TotalTokens,
+		InputTokens:              block.TokenCounts.InputTokens,
+		OutputTokens:             block.TokenCounts.OutputTokens,
+		CacheCreationInputTokens: block.TokenCounts.CacheCreationInputTokens,
+		CacheReadInputTokens:     block.TokenCounts.CacheReadInputTokens,
+		CostUSD:                  block.CostUSD,
+		RemainingMinutes:         block.Projection.RemainingMinutes,
+		CostPerHour:              block.BurnRate.CostPerHour,
 	}, nil
 }

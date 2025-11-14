@@ -64,9 +64,10 @@ func FormatTooltip(data *ccusage.BlocksData) string {
 	fmt.Fprintf(&sb, "<b>\uf1d8 Requests:</b> %d\n",
 		data.Entries)
 
+	totalInput := data.InputTokens + data.CacheCreationInputTokens + data.CacheReadInputTokens
 	fmt.Fprintf(&sb, "<b>\uf145 Tokens:</b> %s (%s in / %s out)\n",
 		FormatNumber(data.TotalTokens),
-		FormatNumber(data.InputTokens),
+		FormatNumber(totalInput),
 		FormatNumber(data.OutputTokens))
 
 	fmt.Fprintf(&sb, "<b>\uf155 Cost:</b> $%.2f @ $%.2f/h",
