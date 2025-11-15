@@ -35,22 +35,37 @@ A lightweight Waybar custom module written in Go that displays Claude Code usage
 
 ### Precompiled Binary Installation
 
-Download and install to your Waybar modules directory:
+Download and install to your Waybar modules directory. Releases follow the pattern `waybar-claude-code-v{version}-linux-{arch}.tar.gz`:
 
 ```bash
-curl -LO https://github.com/hxreborn/waybar-claude-code/releases/latest/download/waybar-claude-code
+# Download latest release (replace {version} with actual version, e.g., v1.0.1)
+curl -LO https://github.com/hxreborn/waybar-claude-code/releases/latest/download/waybar-claude-code-v{version}-linux-amd64.tar.gz
+tar -xzf waybar-claude-code-*.tar.gz
 install -Dm755 waybar-claude-code ~/.config/waybar/modules/waybar-claude-code
 ```
 
-### Build from Source
+Verify installation:
+```bash
+waybar-claude-code --version
+```
 
-Clone and build:
+### Arch Linux (AUR)
+
+If you use an AUR helper like `yay`:
+
+```bash
+yay -S waybar-claude-code-bin
+```
+
+### Build from Source
 
 ```bash
 git clone https://github.com/hxreborn/waybar-claude-code.git /tmp/waybar-claude-code
 cd /tmp/waybar-claude-code
 make install
 ```
+
+If this module keeps your workflow smoother, file an issue or star the repo so I know it's worth maintaining.
 
 ## Configuration
 
@@ -103,6 +118,26 @@ Hover over the 󰜡 icon to see detailed metrics:
 ```
 
 Reset time uses 24-hour format and rounds to the nearest hour if within 2 minutes (e.g., `17:59` → `18h`).
+
+## Troubleshooting
+
+**Icons show as boxes:** Install a [Nerd Font](https://www.nerdfonts.com/) and configure it in your terminal/Waybar settings
+
+**Module not appearing:** Verify binary is executable: `ls -lh ~/.config/waybar/modules/waybar-claude-code`
+
+**No tooltip on hover:** Add `"tooltip": true` to the module config in `~/.config/waybar/config.jsonc`
+
+**Module shows error state:** Run binary manually to see error output: `~/.config/waybar/modules/waybar-claude-code`
+
+## Versioning
+
+Tags follow Semantic Versioning:
+
+- PATCH: fixes / tiny tweaks that don't change the JSON shape
+- MINOR: behavior or output shape changes
+- MAJOR: breaking changes (unlikely for this project)
+
+Packagers should track tags, not arbitrary commits.
 
 ## License
 
