@@ -131,16 +131,6 @@ Reset time uses 24-hour format and rounds to the nearest hour if within 2 minute
 
 **Module shows error state:** Run binary manually to see error output: `~/.config/waybar/modules/waybar-claude-code`
 
-## Versioning
-
-Tags follow Semantic Versioning:
-
-- PATCH: fixes / tiny tweaks that don't change the JSON shape
-- MINOR: behavior or output shape changes
-- MAJOR: breaking changes (unlikely for this project)
-
-Packagers should track tags, not arbitrary commits.
-
 ## License
 
 MIT - see [LICENSE](LICENSE) file for details
