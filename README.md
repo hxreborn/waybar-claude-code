@@ -84,6 +84,8 @@ Add to `~/.config/waybar/config.jsonc`:
 }
 ```
 
+**Note:** Uses `$TERMINAL` environment variable, falls back to `kitty` if unset.
+
 ### Style Configuration
 
 Add to `~/.config/waybar/style.css`:
