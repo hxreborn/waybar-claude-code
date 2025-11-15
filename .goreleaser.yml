@@ -1,0 +1,49 @@
+version: 2
+
+before:
+  hooks:
+    - go mod download
+
+builds:
+  - id: waybar-claude-code
+    binary: waybar-claude-code
+    main: ./cmd/waybar-claude-code
+    env:
+      - CGO_ENABLED=0
+      - GO111MODULE=on
+    goos:
+      - linux
+    goarch:
+      - amd64
+      - arm64
+    flags:
+      - -trimpath
+    ldflags:
+      - -s -w -X main.version={{.Version}}
+
+archives:
+  - id: default
+    name_template: "waybar-claude-code-v{{ .Version }}-{{ .Os }}-{{ .Arch }}"
+    files:
+      - LICENSE
+      - README.md
+
+checksum:
+  name_template: 'checksums.txt'
+  algorithm: sha256
+
+changelog:
+  use: github
+  sort: asc
+  filters:
+    exclude:
+      - '^docs:'
+      - '^test:'
+      - '^chore:'
+
+release:
+  github:
+    owner: hxreborn
+    name: waybar-claude-code
+  draft: false
+  prerelease: auto
