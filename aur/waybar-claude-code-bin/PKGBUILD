@@ -2,7 +2,7 @@
 # Maintainer: hxreborn <https://github.com/hxreborn>
 
 pkgname=waybar-claude-code-bin
-pkgver=1.0.1
+pkgver=1.0.2
 pkgrel=1
 pkgdesc="Waybar module that shows Claude Code usage stats via ccusage"
 arch=('x86_64' 'aarch64')

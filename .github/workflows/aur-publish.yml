@@ -1,0 +1,31 @@
+name: Publish to AUR
+
+on:
+  release:
+    types: [published]
+  workflow_dispatch:
+
+jobs:
+  aur-publish:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Extract version from tag
+        id: version
+        run: echo "version=${GITHUB_REF#refs/tags/v}" >> $GITHUB_OUTPUT
+
+      - name: Update PKGBUILD version
+        run: |
+          sed -i "s/pkgver=.*/pkgver=${{ steps.version.outputs.version }}/" aur/waybar-claude-code-bin/PKGBUILD
+
+      - name: Publish to AUR
+        uses: KSXGitHub/github-actions-deploy-aur@v2.7.2
+        with:
+          pkgname: waybar-claude-code-bin
+          pkgbuild: ./aur/waybar-claude-code-bin/PKGBUILD
+          commit_username: hxreborn
+          commit_email: 32096750+hxreborn@users.noreply.github.com
+          ssh_private_key: ${{ secrets.AUR_SSH_PRIVATE_KEY }}
+          commit_message: Update to ${{ steps.version.outputs.version }}
+          ssh_keyscan_types: rsa,ecdsa,ed25519

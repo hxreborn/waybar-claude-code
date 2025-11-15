@@ -191,6 +191,7 @@ waybar-claude-code-v{version}-linux-{arch}.tar.gz
    ```
 2. Verify https://pkg.go.dev/github.com/hxreborn/waybar-claude-code shows latest tag
 3. Verify `waybar-claude-code --version` outputs correct version
+4. AUR package auto-updates via `.github/workflows/aur-publish.yml` (no manual action needed)
 
 **Changelog:**
 
